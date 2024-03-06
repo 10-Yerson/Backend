@@ -1,9 +1,9 @@
 class Cuenta {
-    protected saldo: number;
-    protected numConsignaciones: number;
-    protected numRetiros: number;
-    protected tasaAnual: number;
-    protected comisionMensual: number;
+    saldo: number;
+    numConsignaciones: number;
+    numRetiros: number;
+    tasaAnual: number;
+    comisionMensual: number;
 
     constructor(saldo: number, tasaAnual: number) {
         this.saldo = saldo;
