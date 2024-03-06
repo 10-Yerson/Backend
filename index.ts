@@ -82,6 +82,43 @@ class CuentaAhorros extends Cuenta {
     }
 }
 
+class CuentaCorriente extends Cuenta {
+    private sobregiro: number;
+
+    constructor(saldo: number, tasaAnual: number) {
+        super(saldo, tasaAnual);
+        this.sobregiro = 0;
+    }
+
+    retirar(cantidad: number): void {
+        if (cantidad <= this.saldo) {
+            super.retirar(cantidad);
+        } else {
+            this.sobregiro += cantidad - this.saldo;
+            this.saldo = 0;
+            this.numRetiros++;
+        }
+    }
+
+    consignar(cantidad: number): void {
+        if (this.sobregiro > 0) {
+            if (cantidad <= this.sobregiro) {
+                this.sobregiro -= cantidad;
+            } else {
+                this.saldo += cantidad - this.sobregiro;
+                this.sobregiro = 0;
+            }
+        } else {
+            super.consignar(cantidad);
+        }
+    }
+
+    imprimir(): void {
+        super.imprimir();
+        console.log("Sobregiro:", this.sobregiro);
+    }
+}
+
 const cuentaAhorros = new CuentaAhorros(15000, 5);
 cuentaAhorros.consignar(2000);
 cuentaAhorros.retirar(500);
@@ -92,3 +129,11 @@ cuentaAhorros.extractoMensual();
 cuentaAhorros.imprimir();
 
 console.log("---------------------------------------");
+
+const cuentaCorriente = new CuentaCorriente(5000, 2);
+cuentaCorriente.consignar(3000);
+cuentaCorriente.retirar(7000);
+cuentaCorriente.retirar(3000);
+cuentaCorriente.consignar(2000);
+cuentaCorriente.extractoMensual();
+cuentaCorriente.imprimir();
